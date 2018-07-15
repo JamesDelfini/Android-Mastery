@@ -2,6 +2,8 @@ package com.delfini.android_mastery;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,10 +12,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView lvUsers;
+    RecyclerView rvUsers;
+    RecyclerView.Adapter rvUsersAdapter;
+    List<SampleRecyclerViewItems> sampleItems = new ArrayList<>();
 
     Button btnAdd;
 
@@ -23,9 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         lvUsers = findViewById(R.id.usersLV);
+        rvUsers = findViewById(R.id.usersRV);
 
         btnAdd = findViewById(R.id.addBTN);
 
+        // Sample for using ListView with dynamic data
         final ArrayList<String> dataList = new ArrayList<>();
         dataList.add("LoL");
         dataList.add("WTF");
@@ -38,6 +46,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showToast(dataList.get(position));
             }
         });
+
+        // Sample for using RecyclerView with dynamic data
+        // Setting up RV
+        rvUsers.setHasFixedSize(true);
+        rvUsers.setLayoutManager(new LinearLayoutManager(this));
+
+        for(int i=1; i<=5; i++){
+            SampleRecyclerViewItems sampleItem = new SampleRecyclerViewItems("lol " + i, "lel");
+            sampleItems.add(sampleItem);
+            rvUsersAdapter = new SampleRecyclerViewAdapter(sampleItems, MainActivity.this);
+            rvUsers.setAdapter(rvUsersAdapter);
+        }
 
         btnAdd.setOnClickListener(this);
     }
